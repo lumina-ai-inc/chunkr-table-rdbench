@@ -1,13 +1,17 @@
 # Chunkr AI Tablebench
 
 
-This is a bench on RD Table bench (https://huggingface.co/datasets/reducto/rd-tablebench) for the Chunkr AI via our new API. The results in this repo and blog dare outdated by a few months - so we are publishing our results here. On the new implementation we scored 0.81 compared to the <0.65 on the original benchmark run.We are publishing our results on the dataset here: 
+This is a bench on RD Table bench (https://huggingface.co/datasets/reducto/rd-tablebench) for the Chunkr AI via our new API. The results in this repo and blog dare outdated by a few months - so we are publishing our results here. On the new implementation we scored 0.81 compared to the <0.65 on the original benchmark run. We are publishing our results on the dataset here. 
+
+We ran the dataset with the following configuration on our API: 
+```
     config = Configuration(
         ocr_strategy=OcrStrategy.ALL,
         segmentation_strategy=SegmentationStrategy.PAGE,
         segment_processing=SegmentProcessing(page=GenerationConfig(html=GenerationStrategy.LLM)),
         high_resolution=True
     )
+```
 
 ### Some notes/limitations we noticed on RD Tablebench and its implementation:
 
