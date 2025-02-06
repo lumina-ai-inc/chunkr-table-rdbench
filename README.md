@@ -18,7 +18,7 @@ We ran the dataset with the following configuration on our API:
 - String matching for table grading has significant limitations:
   - Fails to capture the visual and semantic structure of tables
   - Cannot evaluate layout and formatting that conveys meaning
-  - Relies on brittle heuristics that break on valid variations
+  - Relies on brittle heuristics that break on valid variations (such as ```edge_case_002.jpg```)
 
 - The scoring criteria in grading.py (S_ROW_MATCH, G_ROW, etc.) (in ```grading.py``` in their github repo) may not reflect real-world table quality. For example, intelligently merged columns that maintain semantic meaning are heavily penalized, even though they may be perfectly valid for downstream LLM tasks.
 The code only strips newlines, hyphens, and whitespace, but doesn't handle other HTML formatting like:
