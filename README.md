@@ -25,7 +25,7 @@ The code only strips newlines, hyphens, and whitespace, but doesn't handle other
 - ```<b>``` or ```<strong>``` tags for bold text
 - ```<i>``` or ```<em>``` tags for italics
 - ```<sup>``` and ```<sub>```for superscript/subscript
-Minor differences are not normalized but are not consistent across the dataset either - which skews results (see ```/edge_case```)
+Minor differences are not normalized but are not consistent across the dataset either - which skews results (see ```edge_case_001.png```)
 
 - Character Normalization Issues:
   - No handling of special characters or their HTML entities (e.g., ```&amp;``` vs &)
