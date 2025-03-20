@@ -1,17 +1,33 @@
 # Chunkr AI Tablebench
 
 
-This is a bench on RD Table bench (https://huggingface.co/datasets/reducto/rd-tablebench) for the Chunkr AI via our new API. The results in this repo and blog are outdated by a few months - so we are publishing our results here. On the new implementation, we scored 0.81 (on 500 randomly sampled tables from the rd-table benchmark dataset - last run on Feb 7th 2025) compared to the <0.65 on the original benchmark run. We are publishing our results on the dataset here. 
+This is a bench on RD Table bench (https://huggingface.co/datasets/reducto/rd-tablebench) for the Chunkr AI via our new API. The results in this repo and blog are outdated by a few months - so we are publishing our results here. On the new implementation, we scored 0.84 (on 500 randomly sampled tables from the rd-table benchmark dataset - last run on March 19th 2025 - results to be uploaded soon) compared to the <0.65 on the original benchmark run. We are publishing our results on the dataset here. 
 
 We ran the dataset with the following configuration on our API: 
 ```
-    config = Configuration(
-        ocr_strategy=OcrStrategy.ALL,
-        segmentation_strategy=SegmentationStrategy.PAGE,
-        segment_processing=SegmentProcessing(page=GenerationConfig(html=GenerationStrategy.LLM)),
-        high_resolution=True
-    )
+                config = Configuration(
+                    high_resolution=True,
+                    chunk_processing={
+                        "ignore_headers_and_footers": False
+                    },
+                    segmentation_strategy=SegmentationStrategy.PAGE,
+                    ocr_strategy=OcrStrategy.ALL,
+                    segment_processing=SegmentProcessing(page=GenerationConfig(html=GenerationStrategy.LLM, llm="Each image is a table. You are an expert in table extraction. Extract tables from the provided PDF images and format them as clean HTML. Do not use any Styling or CSS. Just the tables. Output in ````html``` tags. For example an output looks like this: ```html <table> <tr> <td>Table 1</td> </tr> </table> ```. Preserve all information in each table.")),
+                )
 ```
+
+and then collected the responses:
+
+```
+response = chunkr.upload(f"./{pdf_path}", config=config)
+task = await client.get_task(response.task_id)
+result = ""
+for chunk in task.output.chunks:
+    for segment in chunk.segments:
+        if hasattr(segment, 'llm') and segment.llm:
+            result += segment.llm
+```
+
 
 ### Some notes/limitations we noticed on RD Tablebench and its implementation:
 
